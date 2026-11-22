@@ -18,6 +18,46 @@ const mode = ref<'ai' | 'manual'>('ai')
 const fileInput = ref<HTMLInputElement | null>(null)
 const cameraInput = ref<HTMLInputElement | null>(null)
 
+const saving = ref(false)
+const canShare = ref(false)
+const baseName = 'slipperpaz-tryon'
+
+// عکس برنددار (لوگو + سایت + نام محصول) برای ذخیره و اشتراک‌گذاری
+async function brandedBlob() {
+  const manualMode = mode.value === 'manual'
+  return await makeBrandedImage({
+    base: manualMode ? photoUrl.value : resultUrl.value,
+    productName: props.product?.name,
+    overlay: manualMode && productImage.value ? {src: productImage.value, place: {...place}} : undefined,
+  })
+}
+
+async function saveBranded() {
+  if (saving.value) return
+  saving.value = true
+  try {
+    downloadBlob(await brandedBlob(), `${baseName}.png`)
+  } catch {
+    errorMsg.value = 'ساخت عکس برنددار انجام نشد؛ دوباره امتحان کن.'
+    useToast().add({title: errorMsg.value, color: 'red'})
+  } finally {
+    saving.value = false
+  }
+}
+
+async function shareBranded() {
+  if (saving.value) return
+  saving.value = true
+  try {
+    const blob = await brandedBlob()
+    await shareBlob(blob, `${baseName}.png`, `${props.product?.name ?? ''} — slipperpaz.ir`)
+  } catch (e: any) {
+    if (e?.name !== 'AbortError') useToast().add({title: 'اشتراک‌گذاری انجام نشد؛ عکس رو ذخیره کن.', color: 'red'})
+  } finally {
+    saving.value = false
+  }
+}
+
 const productImage = computed(() => selectedColor.value?.image || props.product?.primary_image)
 
 // ---------- سهمیه‌ی پرو هوشمند: روزی یک بار برای هر کاربر واردشده؛ بعدش فقط حالت دستی ----------
@@ -173,6 +213,7 @@ function onKey(e: KeyboardEvent) {
 
 onMounted(() => {
   loadQuota()
+  canShare.value = canShareFile(new Blob([''], {type: 'image/png'}), 'a.png')
   document.body.style.overflow = 'hidden'
   window.addEventListener('keydown', onKey)
 })
@@ -254,6 +295,10 @@ onBeforeUnmount(() => {
                 <label>اندازه<input v-model.number="place.scale" type="range" min="10" max="90" class="w-full accent-yellow-500"></label>
                 <label>چرخش<input v-model.number="place.rotate" type="range" min="-90" max="90" class="w-full accent-yellow-500"></label>
               </div>
+              <div class="mt-3 flex gap-2">
+                <UButton class="flex-1 justify-center" color="yellow" icon="material-symbols:download" :loading="saving" data-test="save-manual" @click="saveBranded">ذخیره عکس</UButton>
+                <UButton v-if="canShare" color="gray" variant="soft" icon="material-symbols:ios-share" :loading="saving" @click="shareBranded">اشتراک</UButton>
+              </div>
               <UButton v-if="aiAvailable" class="mt-3" block color="gray" variant="soft" @click="mode = 'ai'">برگشت به پروب هوشمند</UButton>
               <UButton v-else class="mt-3" block color="gray" variant="ghost" @click="photoUrl = ''; reset()">عکس دیگه</UButton>
             </div>
@@ -287,8 +332,11 @@ onBeforeUnmount(() => {
                   {{ status === 'error' ? 'دوباره امتحان کن' : 'ببین بهم میاد؟' }}
                 </UButton>
                 <template v-else>
-                  <UButton class="flex-1 justify-center" color="yellow" icon="material-symbols:download" :href="resultUrl" download="slipperpaz-tryon.png" tag="a">
+                  <UButton class="flex-1 justify-center" color="yellow" icon="material-symbols:download" :loading="saving" data-test="save" @click="saveBranded">
                     ذخیره عکس
+                  </UButton>
+                  <UButton v-if="canShare" color="gray" variant="soft" icon="material-symbols:ios-share" :loading="saving" data-test="share" @click="shareBranded">
+                    اشتراک
                   </UButton>
                   <UButton v-if="aiAvailable" color="gray" variant="soft" icon="material-symbols:refresh" @click="reset">دوباره</UButton>
                   <UButton v-else color="gray" variant="soft" icon="material-symbols:pan-tool-outline" data-test="to-manual" @click="mode = 'manual'">پرو دستی</UButton>
