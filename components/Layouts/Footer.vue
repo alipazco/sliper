@@ -3,7 +3,7 @@
     <u-container>
       <div class="flex flex-wrap justify-center lg:grid lg:grid-flow-col py-5 grid-cols-3 sm:grid-rows-3">
         <div class="row-span-5">
-          <img src="/images/logo.avif" alt="اسلیپر پاز" class="w-6/12">
+          <img src="/images/logo.png" alt="اسلیپر پاز" class="w-6/12">
           <h6 class="text-amber-400">با عشـــ❤️ــق پیش قدماتیم</h6>
           <p class="py-2">نخستین پلتفرم فروش انواع دمپایی و مد استایل </p>
           <p class="py-1">ما رو در چنل های زیر دنبال کنید .</p>

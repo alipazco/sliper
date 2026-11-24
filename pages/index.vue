@@ -114,7 +114,7 @@ useHead({
 
     <!-- اسلایدر + سه محصول منتخب؛ با اسکرول زیر برگه‌ی محتوا می‌رود -->
     <div class="relative">
-      <div class="lg:sticky lg:top-20">
+      <div class="lg:sticky lg:top-20 pb-5">
         <HomeHero :slides="slide?.data ?? []" :trio="trio" :trio-label="trioLabel"/>
       </div>
 

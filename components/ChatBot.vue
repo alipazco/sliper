@@ -200,7 +200,7 @@ onBeforeUnmount(() => {
 
         <form v-if="!compact" class="dock-pill" @submit.prevent="openChat(dockInput)">
           <input v-model="dockInput" type="text" class="dock-input" :placeholder="examples[exampleIndex]"
-                 aria-label="جستجو با چت‌بات" @focus="openChat()">
+                 aria-label="جستجو با پازی" @focus="openChat()">
           <button type="submit" class="dock-send" aria-label="ارسال">
             <UIcon name="i-heroicons-paper-airplane" class="h-4 w-4"/>
           </button>
@@ -282,7 +282,7 @@ onBeforeUnmount(() => {
           <!-- نشانگر تایپ -->
           <div v-if="loading" class="flex gap-2">
             <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-secColor">
-              <UIcon name="i-heroicons-sparkles" class="h-3.5 w-3.5 text-mainColor"/>
+              <UIcon name="i-heroicons-paper-airplane" class="h-3.5 w-3.5 text-mainColor tr rotate-180"/>
             </div>
             <div class="flex items-center gap-1 rounded-2xl rounded-tr-sm bg-white px-4 py-3 shadow-sm">
               <span v-for="n in 3" :key="n" class="h-2 w-2 animate-bounce rounded-full bg-gray-400" :style="{animationDelay: `${(n - 1) * 0.15}s`}"></span>
@@ -293,13 +293,13 @@ onBeforeUnmount(() => {
         <!-- ورودی -->
         <footer class="shrink-0 border-t border-gray-100 bg-white px-3 pb-3 pt-2">
           <div class="flex items-end gap-2 rounded-2xl border-2 border-transparent bg-gray-100 px-3 py-2 transition-colors focus-within:border-mainColor">
-            <textarea ref="inputEl" v-model="input" rows="1" :disabled="loading" placeholder="مثلاً: دمپایی راحت زنانه زیر ۲۰۰ هزار تومن"
+            <textarea ref="inputEl" v-model="input" rows="1" :disabled="loading" placeholder=" دمپایی راحت زنانه زیر ۲۰۰ هزار تومن"
                       class="max-h-24 flex-1 resize-none bg-transparent text-sm text-gray-800 outline-none placeholder:text-gray-400"
                       @keydown="onKeydown"></textarea>
             <button type="button" :disabled="!input.trim() || loading" aria-label="ارسال" class="send-btn"
                     :class="input.trim() && !loading ? 'bg-secColor text-mainColor active:scale-95' : 'cursor-not-allowed bg-gray-200 text-gray-400'"
                     @click="sendMessage()">
-              <UIcon name="i-heroicons-paper-airplane" class="h-4 w-4"/>
+                    <UIcon name="i-heroicons-paper-airplane" class="h-4 w-4 rotate-180" />
             </button>
           </div>
         </footer>
@@ -319,11 +319,11 @@ body.has-chat-dock {
 
 <style scoped>
 .dock {
-  @apply fixed inset-x-0 bottom-3 z-40 mx-auto flex w-[min(720px,calc(100%-24px))] items-center gap-2.5;
+  @apply fixed inset-x-0 bottom-10 z-40 mx-auto flex w-[min(720px,calc(100%-24px))] items-center gap-2.5;
 }
 
 .dock-compact {
-  @apply inset-x-auto bottom-4 left-4 mx-0 w-auto;
+  @apply inset-x-auto  left-4 mx-0 w-auto;
 }
 
 .dock-avatar {

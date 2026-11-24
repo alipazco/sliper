@@ -93,7 +93,7 @@ if (props?.fixed) {
         </div>
         <div class="w-1/3 flex justify-center">
           <nuxt-link to="/">
-            <img src="/images/logo.avif" class="w-[130px]" alt="اسلیپر پاز">
+            <img src="/images/logoType.png" class="w-[150px]" alt="اسلیپر پاز">
           </nuxt-link>
         </div>
         <div class=" w-1/3 flex justify-end mx-1">

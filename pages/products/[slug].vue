@@ -430,7 +430,7 @@ const links = [
       <div class="price-details-product">
         <div class="hidden lg:block">
           <div class="flex justify-center mb-4">
-            <img src="/images/logo.avif" class="w-[130px] xl:w-[150px]" alt="اسلیپر استور"/>
+            <img src="/images/logo.png" class="w-[130px] xl:w-[150px]" alt="اسلیپر استور"/>
           </div>
           <ul class="text-sm space-y-3 text-secColor/80">
             <li class="flex items-center gap-2">

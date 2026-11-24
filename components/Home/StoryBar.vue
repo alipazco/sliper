@@ -12,7 +12,7 @@ function openStory(i: number) {
 </script>
 
 <template>
-  <div v-if="stories?.length" class="flex justify-center px-3 pb-3 pt-2">
+  <div v-if="stories?.length" class="flex justify-center px-3 pb-3 ">
     <div class="no-scrollbar flex max-w-full gap-4 overflow-x-auto px-5 py-2   ">
       <button v-for="(story, i) in stories" :key="story.id" type="button" class="group flex shrink-0 flex-col items-center gap-1"
               :aria-label="`مشاهده استوری ${story.title || ''}`" @click="openStory(i)">
