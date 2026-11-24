@@ -53,7 +53,7 @@ const stageStyle = computed(() => ({
                 <img :src="item.file" :alt="item.title || 'اسلیپر پاز'" class="slide-img" :loading="i === 0 ? 'eager' : 'lazy'">
                 <div class="slide-shade"></div>
                 <div class="slide-copy">
-                  <h2 class="text-2xl font-black text-white drop-shadow lg:text-4xl">{{ item.title }}</h2>
+                  <h2 class="font-display text-3xl text-white drop-shadow-lg lg:text-5xl">{{ item.title }}</h2>
                   <NuxtLink v-if="item.link" :to="item.link">
                     <UButton class="mt-3 rounded-full" label="همین الان بخرش" color="yellow" size="lg"/>
                   </NuxtLink>
@@ -68,7 +68,7 @@ const stageStyle = computed(() => ({
               <img v-if="slides?.[0]" :src="slides[0].file" :alt="slides[0].title || 'اسلیپر پاز'" class="slide-img">
               <div class="slide-shade"></div>
               <div class="slide-copy">
-                <h2 class="text-2xl font-black text-white drop-shadow lg:text-4xl">{{ slides?.[0]?.title }}</h2>
+                <h2 class="font-display text-3xl text-white drop-shadow-lg lg:text-5xl">{{ slides?.[0]?.title }}</h2>
               </div>
             </div>
           </template>

@@ -14,7 +14,7 @@ defineProps<{
     <div class="flex items-end justify-between gap-3 px-1 pb-3">
       <div>
         <span class="showcase-kicker" :class="`tone-${tone || 'new'}`">{{ kicker }}</span>
-        <h2 class="text-xl font-black text-secColor sm:text-2xl">{{ title }}</h2>
+        <h2 class="font-display text-2xl text-secColor sm:text-3xl">{{ title }}</h2>
       </div>
       <NuxtLink :to="link" class="see-all-link">
         مشاهده همه
