@@ -32,7 +32,7 @@ const trio = computed(() => {
     if (seen.has(p.id)) continue
     seen.add(p.id)
     out.push(p)
-    if (out.length === 3) break
+    if (out.length === 8) break
   }
   return out
 })
