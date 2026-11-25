@@ -12,16 +12,22 @@
     font-family: "Pacifico";
     src: url(../fonts/Pacifico-Regular.ttf);
 }
-/* فونت تیترها (Morabba): فقط یک وزن دارد، پس بولد مصنوعی خاموش است */
+/* فونت تیترها (Morabba): همه‌ی h1..h4 و کلاس font-display */
 @font-face {
     font-family: "Morabba";
     src: url('/fonts/Morabba-Regular.woff2') format('woff2');
     font-weight: 400;
     font-display: swap;
 }
-.font-display {
+@font-face {
+    font-family: "Morabba";
+    src: url('/fonts/Morabba-Bold.woff2') format('woff2');
+    font-weight: 700 900;
+    font-display: swap;
+}
+h1, h2, h3, h4, .font-display {
     font-family: "Morabba", "Vazir", sans-serif;
-    font-weight: 400 !important;
+    font-weight: 700;
     font-synthesis-weight: none;
 }
 * {

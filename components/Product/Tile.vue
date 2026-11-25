@@ -16,7 +16,7 @@ const onSale = computed(() => !!props.product?.on_sale && (props.product?.discou
       <span v-if="onSale" class="tile-badge">{{ product.discount_percent }}٪ تخفیف</span>
       <span v-if="product?.total_quantity === 0 || product?.in_stock === false" class="tile-soldout">ناموجود</span>
     </div>
-    <h3 class="mt-2 truncate px-1 text-sm font-bold text-secColor">{{ product?.name }}</h3>
+    <h3 class="mt-2 truncate px-1 text-base font-bold text-secColor">{{ product?.name }}</h3>
     <div class="flex items-baseline gap-2 px-1 pb-1">
       <span class="text-sm font-black" :class="onSale ? 'text-cosColor' : 'text-secColor'">{{ numberFormat(price) }} <small class="font-normal">تومان</small></span>
       <span v-if="onSale" class="text-xs text-secColor/45 line-through">{{ numberFormat(product?.regular_price) }}</span>

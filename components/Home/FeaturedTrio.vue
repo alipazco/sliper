@@ -10,7 +10,7 @@ defineProps<{ products: any[]; label: string }>()
   <div class="flex min-w-0 flex-col lg:h-[min(64vh,520px)]">
     <div class="mb-2 flex items-center gap-2 px-1">
       <span class="h-2 w-2 animate-pulse rounded-full bg-mainColor"></span>
-      <h2 class="text-sm font-black text-secColor">{{ label }}</h2>
+      <h2 class="text-base font-black text-secColor">{{ label }}</h2>
     </div>
 
     <div class="no-scrollbar -mx-3 flex flex-1 snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-1 lg:mx-0 lg:grid lg:min-h-0 lg:grid-cols-1 lg:grid-rows-3 lg:overflow-visible lg:px-0 lg:pb-0">
