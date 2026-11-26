@@ -5,6 +5,9 @@ const { data: slide }    = await useFetch(`${apiBase}/sliders`)
 const { data: stories }  = await useFetch(`${apiBase}/stories`)
 const { data: featured } = await useFetch(`${apiBase}/products/featured`, { query: { limit: 8 } })
 
+const { occasion, now } = useOccasion()
+const isBf = computed(() => occasion.value?.theme === 'black-friday')
+
 const lists = computed(() => ({
   sale: featured.value?.data?.sale ?? [],
   bestsellers: featured.value?.data?.bestsellers ?? [],
@@ -21,7 +24,7 @@ const mode = useState<'sale' | 'bestsellers'>('home-featured-mode', () => {
 })
 
 // اگر لیست تخفیف خالی بود، همان پرفروش‌ها اول می‌آیند
-const saleFirst = computed(() => mode.value === 'sale' && lists.value.sale.length > 0)
+const saleFirst = computed(() => (isBf.value || mode.value === 'sale') && lists.value.sale.length > 0)
 
 const trio = computed(() => {
   const main = saleFirst.value ? lists.value.sale : lists.value.bestsellers
@@ -36,7 +39,7 @@ const trio = computed(() => {
   }
   return out
 })
-const trioLabel = computed(() => (saleFirst.value ? 'کوپنـپاز؛ تخفیف‌های امروز' : 'پرفروش‌های اسلیپر پاز'))
+const trioLabel = computed(() => (isBf.value ? 'بلک فرایدی؛ تخفیف‌های ویژه' : saleFirst.value ? 'کوپنـپاز؛ تخفیف‌های امروز' : 'پرفروش‌های اسلیپر پاز'))
 
 const saleRow = computed(() => ({
   kicker: 'کوپنـپاز', title: 'تا ۵۰ درصد تخفیف', products: lists.value.sale, link: '/products?sort_by=sale', tone: 'sale' as const,
@@ -108,7 +111,7 @@ useHead({
   <LayoutsHeader/>
   <h1 class="sr-only">اسلیپر پاز؛ خرید آنلاین دمپایی و کفش راحتی زنانه، مردانه و بچگانه</h1>
 
-  <main class="relative pb-4 lg:pt-24">
+  <main class="relative pb-4 lg:pt-24" :class="{'theme-bf': isBf}">
 
 
 
@@ -121,6 +124,7 @@ useHead({
       <div class="sheet">
         <u-container>
           <HomeStoryBar :stories="stories?.data ?? []"/>
+          <HomeOccasionDeals v-if="isBf" :occasion="occasion" :now="now"/>
           <HomeShowcaseRow v-for="row in rows" :key="row.tone" v-bind="row"/>
 
           <HomeBanner :dataBanner="bannerItemData"/>

@@ -53,3 +53,21 @@ h1, h2, h3, h4, .font-display {
         opacity: 1;
     }
 }
+
+/* ============ تم مناسبتی: بلک فرایدی (روی <main class="theme-bf"> فعال می‌شود) ============ */
+.theme-bf { background: #050506; color: #f4f4f5; }
+.theme-bf .sheet { background: #0b0b0d !important; box-shadow: 0 -18px 40px -12px rgba(0, 0, 0, .7) !important; }
+.theme-bf .sheet .bg-white, .theme-bf .showcase { background: #141418 !important; }
+.theme-bf .showcase { border: 1px solid rgba(255, 255, 255, .06); backdrop-filter: none !important; }
+.theme-bf .text-secColor, .theme-bf h1, .theme-bf h2, .theme-bf h3 { color: #fff !important; }
+.theme-bf .text-gray-400, .theme-bf .text-gray-500, .theme-bf .text-secColor\/45 { color: rgba(255, 255, 255, .55) !important; }
+.theme-bf .tile, .theme-bf .trio-card { background: #16161a !important; border: 1px solid rgba(255, 255, 255, .08); box-shadow: none !important; }
+.theme-bf .tile img { mix-blend-mode: normal !important; }
+.theme-bf .tile .bg-gray-50, .theme-bf .trio-img { background: #1f1f25 !important; }
+.theme-bf .trio-card.is-active { border-color: #ffbe33; box-shadow: 0 0 0 2px #ffbe33, 0 10px 30px rgba(255, 190, 51, .25) !important; }
+.theme-bf .trio-go { background: rgba(255, 190, 51, .2) !important; color: #ffbe33 !important; }
+.theme-bf .ticker-head { background: #000 !important; border: 1px solid rgba(255, 255, 255, .12); }
+.theme-bf .ticker-bar { background: rgba(255, 255, 255, .12) !important; }
+.theme-bf .showcase-kicker, .theme-bf .see-all-link { color: #ffbe33 !important; background: rgba(255, 190, 51, .12) !important; }
+.theme-bf .filters_menu { border-color: rgba(255, 255, 255, .1) !important; }
+.theme-bf .hero-stage .slide-shade { background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.15)) !important; }
