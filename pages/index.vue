@@ -3,12 +3,51 @@ const { public: { apiBase } } = useRuntimeConfig()
 
 const { data: slide }    = await useFetch(`${apiBase}/sliders`)
 const { data: stories }  = await useFetch(`${apiBase}/stories`)
-const { data: tabs }     = await useFetch(`${apiBase}/products/products-tabs`)
-const { data: productsSale }     = await useFetch(`${apiBase}/products?sort_by=sale`)
-const saleProducts =ref({
-  link:'/products?sort_by=sale',
-  products :productsSale?.value?.data?.products
+const { data: featured } = await useFetch(`${apiBase}/products/featured`, { query: { limit: 8 } })
+
+const { occasion, now } = useOccasion()
+const isBf = computed(() => occasion.value?.theme === 'black-friday')
+
+const lists = computed(() => ({
+  sale: featured.value?.data?.sale ?? [],
+  bestsellers: featured.value?.data?.bestsellers ?? [],
+  newest: featured.value?.data?.newest ?? [],
+}))
+
+// هر بار که کاربر دوباره وارد سایت می‌شود، منتخب‌ها جابه‌جا می‌شوند:
+// یک بار تخفیف‌ها اول، بار بعد پرفروش‌ها. نوبت قبلی در کوکی می‌ماند (سازگار با SSR).
+const lastMode = useCookie<string>('home_featured', { maxAge: 60 * 60 * 24 * 30, sameSite: 'lax' })
+const mode = useState<'sale' | 'bestsellers'>('home-featured-mode', () => {
+  const next = lastMode.value === 'sale' ? 'bestsellers' : 'sale'
+  lastMode.value = next
+  return next
 })
+
+// اگر لیست تخفیف خالی بود، همان پرفروش‌ها اول می‌آیند
+const saleFirst = computed(() => (isBf.value || mode.value === 'sale') && lists.value.sale.length > 0)
+
+const trio = computed(() => {
+  const main = saleFirst.value ? lists.value.sale : lists.value.bestsellers
+  const rest = [...lists.value.bestsellers, ...lists.value.sale, ...lists.value.newest]
+  const seen = new Set<number>()
+  const out: any[] = []
+  for (const p of [...main, ...rest]) {
+    if (seen.has(p.id)) continue
+    seen.add(p.id)
+    out.push(p)
+    if (out.length === 8) break
+  }
+  return out
+})
+const trioLabel = computed(() => (isBf.value ? 'بلک فرایدی؛ تخفیف‌های ویژه' : saleFirst.value ? 'کوپنـپاز؛ تخفیف‌های امروز' : 'پرفروش‌های اسلیپر پاز'))
+
+const saleRow = computed(() => ({
+  kicker: 'کوپنـپاز', title: 'تا ۵۰ درصد تخفیف', products: lists.value.sale, link: '/products?sort_by=sale', tone: 'sale' as const,
+}))
+const bestRow = computed(() => ({
+  kicker: 'محبوب مشتری‌ها', title: 'پرفروش‌ترین‌ها', products: lists.value.bestsellers, link: '/products?sort_by=bestseller', tone: 'best' as const,
+}))
+const rows = computed(() => (saleFirst.value ? [saleRow.value, bestRow.value] : [bestRow.value, saleRow.value]))
 
 const bannerItemData = ref([
   {
@@ -72,20 +111,37 @@ useHead({
   <LayoutsHeader/>
   <h1 class="sr-only">اسلیپر پاز؛ خرید آنلاین دمپایی و کفش راحتی زنانه، مردانه و بچگانه</h1>
 
-  <!-- اسلایدر اصلی -->
-  <GlobalSlider :items="slide" h="lg:h-[90vh] h-[40vh]" :stories="stories"/>
+  <main class="relative pb-4 lg:pt-24" :class="{'theme-bf': isBf}">
 
 
-  <u-container>
-    <HomeTab/>
-    <br>
 
-    <GlobalProductCard :data-product="saleProducts"/>
-    <HomeBanner :dataBanner="bannerItemData"/>
-  </u-container>
+    <!-- اسلایدر + سه محصول منتخب؛ با اسکرول زیر برگه‌ی محتوا می‌رود -->
+    <div class="relative">
+      <div class="lg:sticky lg:top-20 pb-5">
+        <HomeHero :slides="slide?.data ?? []" :trio="trio" :trio-label="trioLabel"/>
+      </div>
+
+      <div class="sheet">
+        <u-container>
+          <HomeStoryBar :stories="stories?.data ?? []"/>
+          <HomeOccasionDeals v-if="isBf" :occasion="occasion" :now="now"/>
+          <HomeShowcaseRow v-for="row in rows" :key="row.tone" v-bind="row"/>
+
+          <HomeBanner :dataBanner="bannerItemData"/>
+          <HomeTab/>
+          <HomeShowcaseRow v-bind="{ kicker: 'تازه رسیده‌ها', title: 'جدیدترین محصولات', products: lists.newest, link: '/products', tone: 'new' }"/>
+
+        </u-container>
+      </div>
+    </div>
+  </main>
 
   <LayoutsFooter/>
-
-  <!-- viewer استوری -->
-
 </template>
+
+<style scoped>
+/* برگه‌ی محتوا با لبه‌ی گرد از روی اسلایدر بالا می‌آید (افکت مایکروسافت استور) */
+.sheet {
+  @apply relative z-10 -mt-6 rounded-t-[2.5rem] bg-slate-200 pb-6 pt-6 shadow-[0_-18px_40px_-12px_rgba(34,40,49,.35)];
+}
+</style>

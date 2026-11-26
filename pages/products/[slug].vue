@@ -19,6 +19,15 @@ const toast = useToast()
 
 const product = computed(() => productData.value?.data)
 
+// چت‌بات سراسری (در app.vue) می‌فهمد کاربر کدام محصول را می‌بیند
+const chatProduct = useState<any>('chatProduct', () => null)
+watchEffect(() => {
+  chatProduct.value = product.value ?? null
+})
+onBeforeUnmount(() => {
+  chatProduct.value = null
+})
+
 // توضیحات محصول به‌صورت متن خام با \n بین پاراگراف/نکات و **متن** برای
 // پررنگ ذخیره شده؛ نمایش با {{ }} همه‌چیز رو یک بلوک بهم‌چسبیده می‌کرد.
 // این تابع خطوطی که با * شروع می‌شن رو به یک لیست تبدیل می‌کنه، بقیه‌ی
@@ -421,7 +430,7 @@ const links = [
       <div class="price-details-product">
         <div class="hidden lg:block">
           <div class="flex justify-center mb-4">
-            <img src="/images/logo.avif" class="w-[130px] xl:w-[150px]" alt="اسلیپر استور"/>
+            <img src="/images/logo.png" class="w-[130px] xl:w-[150px]" alt="اسلیپر استور"/>
           </div>
           <ul class="text-sm space-y-3 text-secColor/80">
             <li class="flex items-center gap-2">
@@ -507,11 +516,6 @@ const links = [
 
   </u-container>
   <LayoutsFooter/>
-  <!-- چت‌بات با context محصول -->
-
-  <ClientOnly>
-    <ChatBot :product="product"/>
-  </ClientOnly>
 </template>
 
 <style>
